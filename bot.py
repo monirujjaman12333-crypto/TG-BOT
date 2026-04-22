@@ -790,8 +790,9 @@ async def show_countries(update: Update, context: ContextTypes.DEFAULT_TYPE):
     buttons = []
     for country_idx, (country, nums) in enumerate(numbers_db[platform].items()):
         if nums:
+            usdt = nums[0]["usdt"] if nums else 0
             buttons.append([InlineKeyboardButton(
-                f"{country} ({len(nums)} left)",
+                f"{country} — {len(nums)} — 💰 ${usdt}",
                 callback_data=f"country::{platform_idx}::{country_idx}"
             )])
     if not buttons:
