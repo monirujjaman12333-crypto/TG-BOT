@@ -253,8 +253,18 @@ def notify_user(raw_phone, otp):
         otp_count_line = f"📊 Total OTPs on this number: <b>{otp_count}x</b>\n" if otp_count > 1 else ""
 
         # User কে message পাঠাও
+        # tracked number থেকে platform ও country বের করো
+        platform_name = ""
+        country_name = ""
+        for t in tracked:
+            if t["number"] == matched_key:
+                platform_name = t.get("platform", "")
+                country_name = t.get("country", "")
+                break
+        
         msg = (
-            f"✅ <b>OTP Received!</b>\n\n"
+            f"✅ <b>OTP Received!</b>\n"
+            f"🌍 {country_name} ({platform_name})\n\n"
             f"📱 Number: <code>{display_number}</code>\n"
             f"🔑 OTP Code: <code>{otp}</code>\n"
             f"{otp_count_line}\n"
