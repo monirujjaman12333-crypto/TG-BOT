@@ -757,8 +757,9 @@ async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"💸 Pending Withdraws: `{pending_w}`"
     )
     keyboard = [
-        [InlineKeyboardButton("👤 User List", callback_data="admin_users::0"),
-         InlineKeyboardButton("💸 Withdraws", callback_data="admin_withdraws")],
+        [InlineKeyboardButton("👤 User List", callback_data="admin_users::0")],
+        [InlineKeyboardButton("💸 Withdraws", callback_data="admin_withdraws")],
+        [InlineKeyboardButton("📢 Broadcast", callback_data="broadcast")],
         [InlineKeyboardButton("⬅️ Back", callback_data="back_main")]
     ]
     await q.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
@@ -999,6 +1000,22 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     text = update.message.text.strip()
 
+    if context.user_data.get("broadcasting") and user_id == ADMIN_ID:
+        context.user_data.pop("broadcasting", None)
+        load_users_fresh()
+        sent = 0
+        failed = 0
+        for uid in users_data.keys():
+            try:
+                await context.bot.send_message(int(uid), text, parse_mode="Markdown")
+                sent += 1
+            except:
+                failed += 1
+        await update.message.reply_text(
+            f"📢 Broadcast done!\n✅ Sent: {sent}\n❌ Failed: {failed}"
+        )
+        return
+
     if context.user_data.get("admin_searching") and user_id == ADMIN_ID:
         context.user_data.pop("admin_searching", None)
         load_users_fresh()
@@ -1223,6 +1240,16 @@ async def remove_all_numbers(update: Update, context: ContextTypes.DEFAULT_TYPE)
     numbers_db[platform][country] = []
     save_data()
     await q.edit_message_text(f"✅ {removed} numbers removed from\n{country} ({platform})")
+async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    q = update.callback_query
+    await safe_answer(q)
+    if q.from_user.id != ADMIN_ID:
+        return
+    context.user_data["broadcasting"] = True
+    await q.edit_message_text(
+        "📢 *Broadcast Message*\n\nসব user কে যে message পাঠাতে চান সেটা লিখুন:",
+        parse_mode="Markdown"
+    )
 
 async def back_main(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
@@ -1240,6 +1267,7 @@ def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(verify_join,           pattern="^verify_join$"))
+    app.add_handler(CallbackQueryHandler(broadcast,             pattern="^broadcast$"))
     app.add_handler(CallbackQueryHandler(get_number,            pattern="^get_number$"))
     app.add_handler(CallbackQueryHandler(show_countries,        pattern="^platform::"))
     app.add_handler(CallbackQueryHandler(show_number,           pattern="^country::"))
