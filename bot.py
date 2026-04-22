@@ -757,8 +757,8 @@ async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"💸 Pending Withdraws: `{pending_w}`"
     )
     keyboard = [
-        [InlineKeyboardButton("👤 User List", callback_data="admin_users::0")],
-        [InlineKeyboardButton("💸 Withdraws", callback_data="admin_withdraws")],
+        [InlineKeyboardButton("👤 User List", callback_data="admin_users::0"),
+         InlineKeyboardButton("💸 Withdraws", callback_data="admin_withdraws")],
         [InlineKeyboardButton("📢 Broadcast", callback_data="broadcast")],
         [InlineKeyboardButton("⬅️ Back", callback_data="back_main")]
     ]
