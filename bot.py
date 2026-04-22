@@ -347,7 +347,7 @@ async def handle_keyboard_buttons(update: Update, context: ContextTypes.DEFAULT_
                     status_icon = f"✅ OTP Received ({otp_count}x)" if otp_count > 1 else "✅ OTP Received"
                     lines.append(
                         f"📲 *Number {i}:* `{t['number']}`\n\n"
-                        f"   🔑 OTP: `{received_otps[-1] if received_otps else '-'}`\n"
+                        f"   🔑 OTP: `{received_otps[-1] if received_otps else '-'}`\n\n"
                         f"   🌍 {t.get('country', '-')} ({t.get('platform', '-')})\n"
                         f"   💰 {t.get('usdt', 0)} USDT | ✅ OTP Received"
                     )
