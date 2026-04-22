@@ -15,8 +15,11 @@ HADI_API_URL = "http://147.135.212.197/crapi/had/viewstats"
 HADI_API_KEY = "RldTRDRSQkdngpFzh4lveGNXdl9SYIpYZmyCYXFq"
 POLL_INTERVAL = 3  # seconds
 
-USERS_FILE = Path("users_data.json")  # bot.py এর same folder এ থাকবে
-SEEN_FILE = Path("seen_ids.json")
+DATA_DIR = os.environ.get("DATA_DIR", "/app/data")
+os.makedirs(DATA_DIR, exist_ok=True)
+
+USERS_FILE = Path(os.path.join(DATA_DIR, "users_data.json"))
+SEEN_FILE  = Path(os.path.join(DATA_DIR, "seen_ids.json"))
 
 # =======================
 # Utilities
