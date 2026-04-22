@@ -735,7 +735,7 @@ async def get_number(update: Update, context: ContextTypes.DEFAULT_TYPE):
         total = sum(len(nums) for nums in countries.values())
         if total > 0:
             buttons.append([InlineKeyboardButton(
-                f"{platform}  ✅ {total} numbers",
+                f"{platform}   ({total}) ",
                 callback_data=f"platform::{idx}"
             )])
     if not buttons:
