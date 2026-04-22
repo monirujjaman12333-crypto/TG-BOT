@@ -227,6 +227,8 @@ async def send_main_menu(bot, chat_id, user_id):
         parse_mode="Markdown"
     )
 
+CHANNEL_USERNAME = "@fb_work_hub"  # ← আপনার channel username দিন
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     u = get_user(user.id)
@@ -234,12 +236,38 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     u["last_name"] = user.last_name or ""
     u["username"] = user.username or ""
     save_data()
+
+    keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔗 Join Channel", url=f"https://t.me/fb_work_hub")],
+        [InlineKeyboardButton("✅ Verify", callback_data="verify_join")]
+    ])
     await update.message.reply_text(
-        f"👋 Welcome *{user.first_name}*!\n\nUse the menu below.",
-        reply_markup=main_keyboard(),
-        parse_mode="Markdown"
+        "Please Join Channel Fast And Click Verify:",
+        reply_markup=keyboard
     )
-    await send_main_menu(context.bot, update.effective_chat.id, user.id)
+
+async def verify_join(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    q = update.callback_query
+    await safe_answer(q)
+    user_id = q.from_user.id
+    try:
+        member = await context.bot.get_chat_member(CHANNEL_USERNAME, user_id)
+        if member.status in ("member", "administrator", "creator"):
+            user = get_user(user_id)
+            await q.edit_message_text(
+                f"👋 Welcome *{q.from_user.first_name}*!\n\nUse the menu below.",
+                parse_mode="Markdown"
+            )
+            await send_main_menu(context.bot, q.message.chat.id, user_id)
+            await context.bot.send_message(
+                q.message.chat.id,
+                "✅ Verified!",
+                reply_markup=main_keyboard()
+            )
+        else:
+            await safe_answer(q, "❌ আগে channel join করুন!", True)
+    except Exception:
+        await safe_answer(q, "❌ আগে channel join করুন!", True)
 
 async def handle_otp_group_message(update, context):
     msg = update.message or update.channel_post
@@ -1209,6 +1237,7 @@ def main():
     load_data()
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CallbackQueryHandler(verify_join,           pattern="^verify_join$"))
     app.add_handler(CallbackQueryHandler(get_number,            pattern="^get_number$"))
     app.add_handler(CallbackQueryHandler(show_countries,        pattern="^platform::"))
     app.add_handler(CallbackQueryHandler(show_number,           pattern="^country::"))
