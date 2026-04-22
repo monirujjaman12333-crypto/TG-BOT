@@ -22,9 +22,12 @@ SUPPORT_USERNAME = "@m_muin"
 OTP_GROUP_ID = -1003221166532
 MIN_WITHDRAW = 1.0
 
-DATA_FILE = "number_list.json"
-USED_FILE = "used_stats.json"
-USERS_FILE = "users_data.json"
+DATA_DIR = os.environ.get("DATA_DIR", "/app/data")
+os.makedirs(DATA_DIR, exist_ok=True)
+
+DATA_FILE  = os.path.join(DATA_DIR, "number_list.json")
+USED_FILE  = os.path.join(DATA_DIR, "used_stats.json")
+USERS_FILE = os.path.join(DATA_DIR, "users_data.json")
 
 logging.basicConfig(level=logging.WARNING)
 
