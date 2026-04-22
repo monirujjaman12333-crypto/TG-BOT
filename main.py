@@ -20,8 +20,8 @@ def run_server():
 
 threading.Thread(target=run_server, daemon=True).start()
 
+# শুধু bot.py চালাও — otp_monitor কে bot.py এর ভেতরে thread হিসেবে চালাতে হবে
 subprocess.Popen(["python", "bot.py"])
-subprocess.Popen(["python", "otp_monitor.py"])
 
 while True:
     pass
