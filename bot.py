@@ -346,16 +346,20 @@ async def handle_keyboard_buttons(update: Update, context: ContextTypes.DEFAULT_
                     otp_lines = "\n".join([f"   🔑 OTP: `{o}`" for o in received_otps])
                     status_icon = f"✅ OTP Received ({otp_count}x)" if otp_count > 1 else "✅ OTP Received"
                     lines.append(
-                        f"📲 *Number {i}:* `{t['number']}`\n\n"
-                        f"   🔑 OTP: `{received_otps[-1] if received_otps else '-'}`\n\n"
-                        f"   🌍 {t.get('country', '-')} ({t.get('platform', '-')})\n"
-                        f"   💰 {t.get('usdt', 0)} USDT | ✅ OTP Received"
+                        f"┌─────────────────\n"
+                        f"│ 📲 *Number {i}:* `{t['number']}`\n\n"
+                        f"│ 🔑 OTP: `{received_otps[-1] if received_otps else '-'}`\n\n"
+                        f"│ 🌍 {t.get('country', '-')} ({t.get('platform', '-')})\n"
+                        f"│ 💰 {t.get('usdt', 0)} USDT | ✅ OTP Received\n"
+                        f"└─────────────────"
                     )
                 else:
                     lines.append(
-                        f"📲 *Number {i}:* `{t['number']}`\n"
-                        f"   🌍 {t.get('country', '-')} ({t.get('platform', '-')})\n"
-                        f"   💰 {t.get('usdt', 0)} USDT | 📡 ⏳ Waiting for OTP..."
+                        f"┌─────────────────\n"
+                        f"│ 📲 *Number {i}:* `{t['number']}`\n"
+                        f"│ 🌍 {t.get('country', '-')} ({t.get('platform', '-')})\n"
+                        f"│ 💰 {t.get('usdt', 0)} USDT | ⏳ Waiting for OTP...\n"
+                        f"└─────────────────"
                     )
             num_section = "\n\n".join(lines)
         elif user.get("active_number"):
