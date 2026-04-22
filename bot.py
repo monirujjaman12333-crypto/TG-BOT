@@ -214,9 +214,10 @@ async def send_main_menu(bot, chat_id, user_id):
             [InlineKeyboardButton("📞 Get Number", callback_data="get_number")],
             [InlineKeyboardButton("➕ Add Number", callback_data="add_number"),
              InlineKeyboardButton("❌ Remove Number", callback_data="remove_number")],
-            [InlineKeyboardButton("👥 Admin Stats", callback_data="admin_stats"),
-             InlineKeyboardButton("👤 User List", callback_data="admin_users::0")],
-            [InlineKeyboardButton("💸 Withdraw Requests", callback_data="admin_withdraws")],
+            [InlineKeyboardButton("👥 Admin Stats", callback_data="admin_stats")],
+            [InlineKeyboardButton("👤 User List", callback_data="admin_users::0"),
+             InlineKeyboardButton("💸 Withdraws", callback_data="admin_withdraws")],
+            [InlineKeyboardButton("📢 Broadcast", callback_data="broadcast")],
         ]
     else:
         keyboard = [[InlineKeyboardButton("📞 Get Number", callback_data="get_number")]]
@@ -759,7 +760,6 @@ async def admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("👤 User List", callback_data="admin_users::0"),
          InlineKeyboardButton("💸 Withdraws", callback_data="admin_withdraws")],
-        [InlineKeyboardButton("📢 Broadcast", callback_data="broadcast")],
         [InlineKeyboardButton("⬅️ Back", callback_data="back_main")]
     ]
     await q.edit_message_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
