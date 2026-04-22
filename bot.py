@@ -1301,5 +1301,18 @@ def main():
     print("🚀 Bot running...")
     app.run_polling()
 
+# ... আগের সব code ...
+
+import threading
+
+def run_otp_monitor():
+    try:
+        import otp_monitor
+        otp_monitor.main()
+    except Exception as e:
+        print(f"OTP Monitor error: {e}")
+
+threading.Thread(target=run_otp_monitor, daemon=True).start()  # ← এখানে
+
 if __name__ == "__main__":
     main()
