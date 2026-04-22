@@ -265,8 +265,10 @@ def notify_user(raw_phone, otp):
         msg = (
             f"✅ <b>OTP Received!</b>\n"
             f"🌍 {country_name} ({platform_name})\n\n"
-            f"📱 Number: <code>{display_number}</code>\n"
-            f"🔑 OTP Code: <code>{otp}</code>\n"
+            f"┌─────────────────\n"
+            f"│ 📱 Number: <code>{display_number}</code>\n"
+            f"│ 🔑 OTP Code: <code>{otp}</code>\n"
+            f"└─────────────────\n"
             f"{otp_count_line}\n"
             f"💰 Earned: <b>+{earn} USDT</b>\n"
             f"💵 New Balance: <code>{user['balance']:.4f}</code> USDT"
