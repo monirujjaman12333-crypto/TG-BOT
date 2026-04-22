@@ -266,7 +266,7 @@ def notify_user(raw_phone, otp):
             f"✅ <b>OTP Received!</b>\n"
             f"🌍 {country_name} ({platform_name})\n\n"
             f"┌─────────────────\n"
-            f"│ 📱 Number: <code>{display_number}</code>\n"
+            f"│ 📱 Number: <code>{display_number}</code>\n\n"
             f"│ 🔑 OTP Code: <code>{otp}</code>\n"
             f"└─────────────────\n"
             f"{otp_count_line}\n"
