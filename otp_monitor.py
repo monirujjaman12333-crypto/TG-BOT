@@ -9,7 +9,7 @@ import hashlib
 # =======================
 # Configuration
 # =======================
-TELEGRAM_BOT_TOKEN = "8369733496:AAGLUn0smHg32ctVN85ozym2AbFtoda2e4A"  # ← তোমার NUMBER BOT token
+TELEGRAM_BOT_TOKEN = "8369733496:AAFu8IsP_H3kitEurVcC-xPoej2T9rtVeAA"  # ← তোমার NUMBER BOT token
 TELEGRAM_CHAT_ID = "-1003221166532"   # ← OTP group ID
 HADI_API_URL = "http://147.135.212.197/crapi/had/viewstats"
 HADI_API_KEY = "RldTRDRSQkdngpFzh4lveGNXdl9SYIpYZmyCYXFq"
