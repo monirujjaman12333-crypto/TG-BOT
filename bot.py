@@ -169,11 +169,11 @@ async def safe_answer(query, text=None, alert=False):
         except:
             pass
 
-def main_keyboard():
+def main_keyboard(user_id=None):
     keyboard = [
         [KeyboardButton("📱 Get Number"), KeyboardButton("💰 Balance")],
         [KeyboardButton("💸 Withdraw"), KeyboardButton("📊 Status")],
-        [KeyboardButton("🆘 Support")],
+        [KeyboardButton("🆘 Support"), KeyboardButton("⚙️ Admin")] if user_id == ADMIN_ID else [KeyboardButton("🆘 Support")],
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
@@ -263,7 +263,7 @@ async def verify_join(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.send_message(
                 q.message.chat.id,
                 "✅ Verified!",
-                reply_markup=main_keyboard()
+                reply_markup=main_keyboard(user_id)
             )
         else:
             await safe_answer(q, "❌ আগে channel join করুন!", True)
@@ -412,6 +412,11 @@ async def handle_keyboard_buttons(update: Update, context: ContextTypes.DEFAULT_
             f"📈 Total Earned: `{user['total_earned']:.4f}` USDT",
             parse_mode="Markdown"
         )
+
+    elif text == "⚙️ Admin":
+        if update.effective_user.id != ADMIN_ID:
+            return
+        await send_main_menu(context.bot, update.effective_chat.id, update.effective_user.id)
 
     elif text == "🆘 Support":
         await update.message.reply_text(
