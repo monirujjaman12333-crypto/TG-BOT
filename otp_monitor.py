@@ -14,7 +14,7 @@ TELEGRAM_BOT_TOKEN = "8369733496:AAFu8IsP_H3kitEurVcC-xPoej2T9rtVeAA"  # ← ত
 TELEGRAM_CHAT_ID = "-1003221166532"   # ← OTP group ID
 HADI_API_URL = "http://147.135.212.197/crapi/had/viewstats"
 HADI_API_KEY = "RldTRDRSQkdngpFzh4lveGNXdl9SYIpYZmyCYXFq"
-POLL_INTERVAL = 3  # seconds
+POLL_INTERVAL = 2  # seconds
 
 DATA_DIR = os.environ.get("DATA_DIR", "/app/data")
 os.makedirs(DATA_DIR, exist_ok=True)
@@ -35,12 +35,14 @@ def load_seen():
         return set()
 
 def save_seen(seen_set):
+    # শুধু last 2000টা রাখো
+    seen_list = list(seen_set)[-2000:]
     with SEEN_FILE.open("w") as f:
-        json.dump(list(seen_set), f, indent=2)
+        json.dump(seen_list, f, indent=2)
 
 def fetch_hadi():
     try:
-        resp = requests.get(HADI_API_URL, params={"token": HADI_API_KEY, "records": 200}, timeout=15)
+        resp = requests.get(HADI_API_URL, params={"token": HADI_API_KEY, "records": 500}, timeout=15)
         resp.raise_for_status()
         return resp.json()
     except Exception as e:
