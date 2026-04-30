@@ -1298,21 +1298,19 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_keyboard_buttons))
     app.add_handler(MessageHandler(filters.Document.ALL, handle_document))
     app.add_error_handler(error_handler)
+    # OTP Monitor কে এখানে thread হিসেবে চালাও — main() এর ভেতরে
+    def run_otp_monitor():
+        try:
+            import otp_monitor
+            otp_monitor.main()
+        except Exception as e:
+            print(f"OTP Monitor error: {e}")
+
+    import threading
+    threading.Thread(target=run_otp_monitor, daemon=True).start()
+
     print("🚀 Bot running...")
     app.run_polling()
-
-# ... আগের সব code ...
-
-import threading
-
-def run_otp_monitor():
-    try:
-        import otp_monitor
-        otp_monitor.main()
-    except Exception as e:
-        print(f"OTP Monitor error: {e}")
-
-threading.Thread(target=run_otp_monitor, daemon=True).start()  # ← এখানে
 
 if __name__ == "__main__":
     main()
