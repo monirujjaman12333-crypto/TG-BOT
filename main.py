@@ -1,7 +1,6 @@
-import subprocess
 import threading
-from http.server import HTTPServer, BaseHTTPRequestHandler
 import os
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
 class HealthHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -18,10 +17,9 @@ def run_server():
     port = int(os.environ.get("PORT", 8080))
     HTTPServer(("0.0.0.0", port), HealthHandler).serve_forever()
 
+# Health check server চালাও
 threading.Thread(target=run_server, daemon=True).start()
 
-# শুধু bot.py চালাও — otp_monitor কে bot.py এর ভেতরে thread হিসেবে চালাতে হবে
-subprocess.Popen(["python", "bot.py"])
-
-while True:
-    pass
+# সরাসরি bot.py import করে main() চালাও
+import bot
+bot.main()
